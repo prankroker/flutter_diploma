@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_diploma/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:flutter_diploma/global/animation/splashScreen.dart';
 import 'package:flutter_diploma/global/common/toast.dart';
+import 'package:flutter_diploma/mainPage.dart';
 import 'package:flutter_diploma/registration.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -161,7 +162,7 @@ class _InputForms extends State<InputForms>{
 
     if(user != null){
       showToast(message: "User is succesfully signIn");
-      //Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));//main page is non existent right now
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
     }
   }
 
@@ -181,7 +182,7 @@ class _InputForms extends State<InputForms>{
         );
 
         await _firebaseAuth.signInWithCredential(credential);
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
       }
     }catch(e){
       showToast(message: "Some error occured in Google login");
