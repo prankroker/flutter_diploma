@@ -8,7 +8,7 @@ class QuizPage extends StatefulWidget {
   const QuizPage({super.key, required this.topicId});
 
   @override
-  _QuizPageState createState() => _QuizPageState();
+  State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
@@ -16,31 +16,30 @@ class _QuizPageState extends State<QuizPage> {
   int currentQuestionIndex = 0;
   int score = 0;
 
-  late Timer _timer;
-  int _start = 0;
-
-  void startTimer(){
-    const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
-        oneSec,
-            (Timer timer)
-        {
-          setState((){
-            _start++;
-          });
-        });
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-    _timer.cancel();
-  }
+  Timer? _timer;
+  int _elapsedTime = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchQuestions();
+    _startTimer(); // Запускаємо таймер на початку тесту
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          _elapsedTime++;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> _fetchQuestions() async {
@@ -68,8 +67,9 @@ class _QuizPageState extends State<QuizPage> {
         currentQuestionIndex++;
       });
     } else {
+      _timer?.cancel(); // Зупиняємо таймер при завершенні тесту
       _saveResult();
-      _showResultsDialog(context,score,questions.length);
+      _showResultsDialog(context, score, questions.length);
     }
   }
 
@@ -78,6 +78,7 @@ class _QuizPageState extends State<QuizPage> {
       'topic': widget.topicId,
       'score': score,
       'totalQuestions': questions.length,
+      'timeSpent': _elapsedTime, // Зберігаємо витрачений час
       'timestamp': FieldValue.serverTimestamp(),
     });
   }
@@ -88,12 +89,12 @@ class _QuizPageState extends State<QuizPage> {
       barrierDismissible: false, // Щоб користувач не закрив випадково
       builder: (context) => AlertDialog(
         title: const Text("Результати"),
-        content: Text("Ваш результат: $correctAnswers з $totalQuestions"),
+        content: Text("Ваш результат: $correctAnswers з $totalQuestions\nЧас: $_elapsedTime сек."),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // Закриваємо діалог
-              Future.microtask(() { // Виконуємо після закриття
+              Future.microtask(() {
                 if (mounted) {
                   Navigator.pushReplacement(
                     context,
@@ -121,7 +122,7 @@ class _QuizPageState extends State<QuizPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Питання ${currentQuestionIndex + 1}/${questions.length}       ${_start}"),
+        title: Text("Питання ${currentQuestionIndex + 1}/${questions.length}       Час: $_elapsedTime сек."),
         centerTitle: true,
       ),
       body: Padding(
@@ -140,17 +141,14 @@ class _QuizPageState extends State<QuizPage> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: ElevatedButton(
-                    onPressed: () => {
-                      _answerQuestion(index),
-                      startTimer()
-                    },
+                    onPressed: () => _answerQuestion(index),
                     child: Text(question['options'][index]),
                   ),
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
