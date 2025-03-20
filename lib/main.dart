@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_diploma/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:flutter_diploma/global/animation/splashScreen.dart';
 import 'package:flutter_diploma/global/common/toast.dart';
@@ -80,7 +83,7 @@ class _InputForms extends State<InputForms>{
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  var _firebaseAuth;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -126,7 +129,7 @@ class _InputForms extends State<InputForms>{
                   const SizedBox(height: 5,),
                   GestureDetector(
                     onTap: (){
-                      _signInWithGoogle();
+                      _signInWithGoogle(context);
                     },
                     child: const Text(" Google auth",style: TextStyle(color: Colors.cyan,fontWeight: FontWeight.bold),),
                   )
@@ -166,28 +169,49 @@ class _InputForms extends State<InputForms>{
     }
   }
 
-  _signInWithGoogle()async{
-
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-    try{
-      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-
-      if(googleSignInAccount != null){
-        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
-
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken,
-        );
-
-        await _firebaseAuth.signInWithCredential(credential);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
-      }
-    }catch(e){
-      showToast(message: "Some error occured in Google login");
-    }
-
+  Future<String> _loadClientId() async {
+    return await rootBundle.loadString('assets/WebClientID.txt');
   }
 
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    try {
+      UserCredential userCredential;
+
+      if (kIsWeb) {
+        final String clientId = await _loadClientId();
+        userCredential = await _firebaseAuth.signInWithPopup(GoogleProvider(clientId: clientId) as AuthProvider);
+      } else {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) return;
+
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        userCredential = await _firebaseAuth.signInWithCredential(credential);
+      }
+
+      User? user = userCredential.user;
+      if (user != null) {
+        await _saveUserToFirestore(user);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
+      }
+    } catch (e) {
+      showToast(message: "Помилка входу через Google: $e");
+    }
+  }
+
+  Future<void> _saveUserToFirestore(User user) async {
+    DocumentReference userDoc = FirebaseFirestore.instance.collection("users").doc(user.uid);
+
+    DocumentSnapshot docSnapshot = await userDoc.get();
+    if (!docSnapshot.exists) {
+      await userDoc.set({
+        'username': user.displayName ?? "Google User",
+        'email': user.email,
+      });
+    }
+  }
 }

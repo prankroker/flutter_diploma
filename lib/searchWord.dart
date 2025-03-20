@@ -12,7 +12,7 @@ class searchWord extends StatefulWidget {
 
 class _SearchWordState extends State<searchWord> {
   final TextEditingController _controller = TextEditingController();
-  String _wordMeaning = "тут буде виводитися значення слова";
+  String _wordMeaning = "тут буде виводитися значення слова(працює тільки для англійської)";
   bool _isLoading = false;
 
   Future<void> _fetchWordDefinition(String word) async {

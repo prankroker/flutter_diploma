@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_diploma/mainPage.dart';
 import 'package:flutter_diploma/themeQuestion.dart';
 import 'dart:async';
 
@@ -15,6 +17,8 @@ class _QuizPageState extends State<QuizPage> {
   List<Map<String, dynamic>> questions = [];
   int currentQuestionIndex = 0;
   int score = 0;
+
+  final user = FirebaseAuth.instance.currentUser;
 
   Timer? _timer;
   int _elapsedTime = 0;
@@ -75,6 +79,7 @@ class _QuizPageState extends State<QuizPage> {
 
   Future<void> _saveResult() async {
     await FirebaseFirestore.instance.collection('results').add({
+      'uid': user?.uid,
       'topic': widget.topicId,
       'score': score,
       'totalQuestions': questions.length,
@@ -98,7 +103,7 @@ class _QuizPageState extends State<QuizPage> {
                 if (mounted) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const Buttons()),
+                    MaterialPageRoute(builder: (context) => const MainPage()),
                   );
                 }
               });

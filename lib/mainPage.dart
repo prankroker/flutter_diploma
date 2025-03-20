@@ -7,8 +7,7 @@ import 'package:flutter_diploma/profile.dart';
 import 'package:flutter_diploma/searchWord.dart';
 import 'package:flutter_diploma/settings.dart';
 
-//TODO:
-//доробити сторінку і посилання з неї на інші
+
 class MyHome extends StatelessWidget {
   const MyHome({super.key});
 
@@ -53,10 +52,10 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const themeQuestion()));
                   },
                   icon: const Icon(
-                    FontAwesomeIcons.clipboardList,
+                    FontAwesomeIcons.flagUsa,
                     color: Colors.blue,
                   ),
-                  label: const Text('Питання по темах'),
+                  label: const Text('Англійська мова'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
@@ -64,10 +63,10 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const savedQuestions()));
                   },
                   icon: const Icon(
-                    FontAwesomeIcons.star,
+                    FontAwesomeIcons.stamp,
                     color: Colors.purple,
                   ),
-                  label: const Text('Збережені питання'),
+                  label: const Text('Німецька мова'),
                 ),
               ],
             ),

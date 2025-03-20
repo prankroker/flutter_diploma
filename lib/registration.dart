@@ -4,6 +4,7 @@ import 'package:flutter_diploma/global/common/toast.dart';
 import 'package:flutter_diploma/main.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'package:flutter_diploma/firebase_auth_implementation/firebase_auth_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Registration extends StatefulWidget{
   const Registration({super.key});
@@ -119,6 +120,11 @@ class _InputForms extends State<InputForms> {
     User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
     if(user != null){
+      await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+        'username':username,
+        'email':email
+      });
+
       showToast(message: "User is succesfully created");
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }

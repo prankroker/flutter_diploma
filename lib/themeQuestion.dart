@@ -24,9 +24,8 @@ class Buttons extends StatefulWidget {
 
 class _ButtonsState extends State<Buttons> {
   final List<Map<String, dynamic>> topics = [
-    {"id": "Grammar", "title": "Граматика", "questions": 5},
+    {"id": "Grammar", "title": "Граматика", "questions": 10},
     {"id": "Vocabulary", "title": "Словниковий запас", "questions": 10},
-    {"id": "Listening", "title": "Аудіювання", "questions": 5},
   ];
 
   @override
@@ -35,7 +34,7 @@ class _ButtonsState extends State<Buttons> {
       data: buildAppTheme(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Теми"),
+          title: const Text("Англійська мова"),
           centerTitle: true,
         ),
         body: Center(
