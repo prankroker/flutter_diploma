@@ -13,15 +13,17 @@ import 'package:flutter_diploma/registration.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {//підключення бази даних і запуск програми
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: 'assets/.env');
   if(kIsWeb) {
     await Firebase.initializeApp(
-    options: const FirebaseOptions(apiKey: "AIzaSyAwu0yadvTwc_stANvgBcoqnMx0-8et43A",
-    appId: "1:1074077607697:web:ce8e6a3acf56180c1e0eb0",
-    messagingSenderId: "1074077607697",
-    projectId: "mobilka-ai-feat")
+        options: FirebaseOptions(apiKey: dotenv.env["API_KEY"]??"",
+            appId: dotenv.env["APP_ID"]??"",
+            messagingSenderId: dotenv.env["MSG_ID"]??"",
+            projectId: "mobilka-ai-feat")
     );
   }
   else{
