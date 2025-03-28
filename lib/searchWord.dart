@@ -12,40 +12,50 @@ class searchWord extends StatefulWidget {
 
 class _SearchWordState extends State<searchWord> {
   final TextEditingController _controller = TextEditingController();
-  String _wordMeaning = "тут буде виводитися значення слова(працює тільки для англійської)";
+  String _wordMeaning = "тут буде виводитися значення слова";
   bool _isLoading = false;
 
-  Future<void> _fetchWordDefinition(String word) async {
+  Future<void> query(String prompt) async{
     setState(() {
       _isLoading = true;
       _wordMeaning = "";
     });
 
-    final url = Uri.parse(
-        'https://api.dictionaryapi.dev/api/v2/entries/en/$word');
-    try {
-      final response = await http.get(url);
+    final List<Map<String, String>> messages = [
+      {"role": "system", "content": "Explain the meaning of entered word. If user enters word wrong, clarify it. Don't ask questions from user"},
+      {"role": "user", "content": prompt}
+    ];
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body) as List;
-        final definition = data[0]['meanings'][0]['definitions'][0]['definition'];
+    final Map<String, Object> data = {
+      "model": "llama3.2",
+      "messages": messages, // Передаємо масив
+      "stream": false,
+      "max_tokens":50,// Обмеження на довжину відповіді
+    };
+
+    try{
+      final http.Response response = await http.post(
+        Uri.parse("http://10.0.2.2:11434/api/chat"),
+        headers: {"Content-Type":"application/json"},
+        body: json.encode(data)
+      );
+
+      if(response.statusCode == 200){
+        final responseData = json.decode(response.body);
+        final definition = responseData["message"]["content"];
         setState(() {
           _wordMeaning = definition;
         });
-      } else if (response.statusCode == 404) {
+      }else if (response.statusCode == 404) {
         setState(() {
-          _wordMeaning = "Слово '$word' не знайдено.";
-        });
-      } else {
-        setState(() {
-          _wordMeaning = "Помилка сервера. Спробуйте пізніше.";
+          _wordMeaning = "Слово '$prompt' не знайдено.";
         });
       }
-    } catch (e) {
+    }catch(e){
       setState(() {
-        _wordMeaning = "Сталася помилка: $e";
+        _wordMeaning = "Помилка сервера. Спробуйте пізніше. $e";
       });
-    } finally {
+    } finally{
       setState(() {
         _isLoading = false;
       });
@@ -55,7 +65,7 @@ class _SearchWordState extends State<searchWord> {
   void _searchWord() {
     final term = _controller.text.trim();
     if (term.isNotEmpty) {
-      _fetchWordDefinition(term);
+      query(term);
     } else {
       setState(() {
         _wordMeaning = "Введіть термін для пошуку.";
