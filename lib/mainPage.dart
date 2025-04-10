@@ -5,7 +5,6 @@ import 'package:flutter_diploma/themes/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_diploma/profile.dart';
 import 'package:flutter_diploma/searchWord.dart';
-import 'package:flutter_diploma/settings.dart';
 
 
 class MyHome extends StatelessWidget {
@@ -74,20 +73,17 @@ class _MainPageState extends State<MainPage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Налаштування'),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Словник'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Профіль'),
           ],
           currentIndex: 0,
           onTap: (index) {
             // Обробка натискання на елементи навігації
+
             if(index == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const settings()));
-            }
-            if(index == 1){
               Navigator.push(context, MaterialPageRoute(builder: (context) => const searchWord()));
             }
-            if(index == 2){
+            if(index == 1){
               Navigator.push(context, MaterialPageRoute(builder: (context) => const profile()));
             }
           },
