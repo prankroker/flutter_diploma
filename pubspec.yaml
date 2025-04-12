@@ -41,6 +41,7 @@ dependencies:
   lottie:
   flutter_dotenv:
   animated_splash_screen:
+  speech_to_text: ^6.0.0
   flutter:
     sdk: flutter
 

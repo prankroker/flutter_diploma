@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:speech_to_text/speech_to_text.dart';
 
 class searchWord extends StatefulWidget {
   const searchWord({super.key});
@@ -11,9 +12,36 @@ class searchWord extends StatefulWidget {
 }
 
 class _SearchWordState extends State<searchWord> {
+  final SpeechToText _speechToText = SpeechToText();
   final TextEditingController _controller = TextEditingController();
   String _wordMeaning = "тут буде виводитися значення слова";
   bool _isLoading = false;
+  bool speechEnabled = false;
+
+  @override
+  void initState(){
+    super.initState();
+    initSpeech();
+  }
+
+  void initSpeech() async{
+    speechEnabled = await _speechToText.initialize();
+
+  }
+
+  void _startListening() async{
+    await _speechToText.listen(onResult: _onSpeechResult);
+  }
+
+  void _stopListening() async {
+    await _speechToText.stop();
+  }
+
+  void _onSpeechResult(result){
+    setState(() {
+      _controller.text = result.recognizedWords;
+    });
+  }
 
   Future<void> query(String prompt) async{
     setState(() {
@@ -107,6 +135,10 @@ class _SearchWordState extends State<searchWord> {
                 textAlign: TextAlign.center,
               ),
             ),
+            FloatingActionButton(onPressed: _speechToText.isListening? _stopListening : _startListening, tooltip: "Listen", child: Icon(
+              _speechToText.isNotListening? Icons.mic_off : Icons.mic,
+              color:Colors.black
+            ),)
           ],
         ),
       ),
