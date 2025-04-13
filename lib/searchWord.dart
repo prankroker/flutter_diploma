@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diploma/themes/theme.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart';
@@ -13,6 +14,8 @@ class searchWord extends StatefulWidget {
 
 class _SearchWordState extends State<searchWord> {
   final SpeechToText _speechToText = SpeechToText();
+  final FlutterTts _flutterTts = FlutterTts();
+  Map? _currentVoice;//it is optional
   final TextEditingController _controller = TextEditingController();
   String _wordMeaning = "тут буде виводитися значення слова";
   bool _isLoading = false;
@@ -22,8 +25,9 @@ class _SearchWordState extends State<searchWord> {
   void initState(){
     super.initState();
     initSpeech();
+    initTTS();
   }
-
+  //speech to text part
   void initSpeech() async{
     speechEnabled = await _speechToText.initialize();
 
@@ -31,16 +35,39 @@ class _SearchWordState extends State<searchWord> {
 
   void _startListening() async{
     await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {
+
+    });
   }
 
   void _stopListening() async {
     await _speechToText.stop();
+    setState(() {
+
+    });
   }
 
   void _onSpeechResult(result){
     setState(() {
       _controller.text = result.recognizedWords;
     });
+  }
+  //text to speech part
+  void initTTS(){
+    _flutterTts.getVoices.then((data) {
+      try{
+        List<Map> _voices = List<Map>.from(data);
+        _voices = _voices.where((_voice) => _voice["name"].contains("en")).toList();
+        _currentVoice = _voices.first;
+        setVoice(_currentVoice!);
+      }catch(e){
+        print(e);
+      }
+    });
+  }
+
+  void setVoice(Map voice){
+    _flutterTts.setVoice({"name": voice["name"], "locale": voice["locale"]});
   }
 
   Future<void> query(String prompt) async{
@@ -50,7 +77,7 @@ class _SearchWordState extends State<searchWord> {
     });
 
     final List<Map<String, String>> messages = [
-      {"role": "system", "content": "Explain the meaning of entered word. If user enters word wrong, clarify it. Don't ask questions from user"},
+      {"role": "system", "content": "Explain the meaning of entered word. If user enters word wrong, clarify it. Words may be in English or German. DO NOT ASK QUESTIONS, please"},
       {"role": "user", "content": prompt}
     ];
 
@@ -135,10 +162,17 @@ class _SearchWordState extends State<searchWord> {
                 textAlign: TextAlign.center,
               ),
             ),
-            FloatingActionButton(onPressed: _speechToText.isListening? _stopListening : _startListening, tooltip: "Listen", child: Icon(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+            FloatingActionButton(heroTag: "Mic" ,onPressed: _speechToText.isListening? _stopListening : _startListening, tooltip: "Listen", child: Icon(
               _speechToText.isNotListening? Icons.mic_off : Icons.mic,
               color:Colors.black
-            ),)
+            ),),
+            const SizedBox(width: 20),
+            FloatingActionButton(heroTag: "Speak" ,onPressed: () {
+              _flutterTts.speak(_wordMeaning);
+            }, child: const Icon(Icons.volume_up),)]),
           ],
         ),
       ),
