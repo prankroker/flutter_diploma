@@ -26,7 +26,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   List<Map<String, String>> chatMessages = [
-    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "system", "content": "You are a helpful assistant. Your purpose is to make dialog with user in the language he uses. If user makes mistake point it out and explain."},
   ];
 
   Future<void> query(String prompt) async {

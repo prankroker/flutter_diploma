@@ -77,7 +77,7 @@ class _SearchWordState extends State<searchWord> {
     });
 
     final List<Map<String, String>> messages = [
-      {"role": "system", "content": "Explain the meaning of entered word. If user enters word wrong, clarify it. Words may be in English or German. DO NOT ASK QUESTIONS, please"},
+      {"role": "system", "content": "You are helpful assistant in language learning process. Explain the meaning of entered word. If user enters word wrong, clarify it. Words may be in English or German. DO NOT ASK QUESTIONS, please"},
       {"role": "user", "content": prompt}
     ];
 
