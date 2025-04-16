@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diploma/chatBotPage.dart';
 import 'package:flutter_diploma/savedQuestions.dart';
 import 'package:flutter_diploma/themeQuestion.dart';
 import 'package:flutter_diploma/themes/theme.dart';
@@ -62,10 +63,20 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const savedQuestions()));
                   },
                   icon: const Icon(
-                    FontAwesomeIcons.stamp,
+                    Icons.abc,
                     color: Colors.purple,
                   ),
                   label: const Text('Німецька мова'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const chatBotPage()));
+                  },
+                  icon: const Icon(
+                      Icons.chat,
+                      color: Colors.purple
+                  ),
+                  label:const Text('Чат бот'),
                 ),
               ],
             ),

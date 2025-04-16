@@ -22,7 +22,6 @@ class profile extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Профіль'),
-          backgroundColor: Colors.pink[50],
           centerTitle: true,
           elevation: 0,
         ),

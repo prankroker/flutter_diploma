@@ -165,12 +165,14 @@ class _SearchWordState extends State<searchWord> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-            FloatingActionButton(heroTag: "Mic" ,onPressed: _speechToText.isListening? _stopListening : _startListening, tooltip: "Listen", child: Icon(
+            FloatingActionButton(heroTag: "Mic" , backgroundColor: Colors.lightBlue[200],
+              onPressed: _speechToText.isListening? _stopListening : _startListening, tooltip: "Listen", child: Icon(
               _speechToText.isNotListening? Icons.mic_off : Icons.mic,
               color:Colors.black
             ),),
             const SizedBox(width: 20),
-            FloatingActionButton(heroTag: "Speak" ,onPressed: () {
+            FloatingActionButton(heroTag: "Speak" ,backgroundColor: Colors.lightBlue[200],
+              onPressed: () {
               _flutterTts.speak(_wordMeaning);
             }, child: const Icon(Icons.volume_up),)]),
           ],
