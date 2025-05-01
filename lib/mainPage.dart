@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_diploma/chatBotPage.dart';
-import 'package:flutter_diploma/savedQuestions.dart';
-import 'package:flutter_diploma/themeQuestion.dart';
+import 'package:flutter_diploma/germanyQuestionsPage.dart';
+import 'package:flutter_diploma/englishQuestionPage.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_diploma/profile.dart';
+import 'package:flutter_diploma/profilePage.dart';
 import 'package:flutter_diploma/searchWord.dart';
 
 

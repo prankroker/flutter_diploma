@@ -9,7 +9,7 @@ import 'package:flutter_diploma/firebase_auth_implementation/firebase_auth_servi
 import 'package:flutter_diploma/global/animation/splashScreen.dart';
 import 'package:flutter_diploma/global/common/toast.dart';
 import 'package:flutter_diploma/mainPage.dart';
-import 'package:flutter_diploma/registration.dart';
+import 'package:flutter_diploma/registrationPage.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
