@@ -167,7 +167,7 @@ class _InputForms extends State<InputForms>{
 
     if(user != null){
       showToast(message: "User is succesfully signIn");
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
     }
   }
 

@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_diploma/main.dart';
-import 'package:flutter_diploma/themes/theme.dart';
 
-class profile extends StatelessWidget {
-  const profile({super.key});
+class Profile extends StatelessWidget {
+  const Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +15,8 @@ class profile extends StatelessWidget {
     final creationTime = user?.metadata.creationTime;
     final daysSinceRegistration = creationTime != null? DateTime.now().difference(creationTime).inDays:0;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // Вимкнення банера debug
-      theme: buildAppTheme(), // Використання готової теми
-      home: Scaffold(
+
+      return Scaffold(
         appBar: AppBar(
           title: const Text('Профіль'),
           centerTitle: true,
@@ -99,7 +96,6 @@ class profile extends StatelessWidget {
           ],
         ),
         ),
-      ),
-    );
+      );
   }
 }

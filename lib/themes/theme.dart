@@ -7,7 +7,19 @@ ThemeData buildAppTheme(){
           style: TextButton.styleFrom(
             foregroundColor: Colors.black,
             backgroundColor: Colors.white,
-          )
+            side: const BorderSide(color: Colors.black, width: 1)
+          ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          side: const BorderSide(color: Colors.black, width: 1),
+            minimumSize: const Size(200,48)
+        )
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey
       ),
       appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(color: Colors.black),

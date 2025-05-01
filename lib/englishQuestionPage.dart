@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_diploma/themes/theme.dart';
 import 'quizPage.dart';
 
-class themeQuestion extends StatelessWidget {
-  const themeQuestion({super.key});
+class EnglishQuestions extends StatelessWidget {
+  const EnglishQuestions({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // Вимкнення банера debug
-      theme: buildAppTheme(), // Використання готової теми
-      home: const Buttons(), // Запуск головної сторінки
-    );
+    return const Buttons();
   }
 }
 

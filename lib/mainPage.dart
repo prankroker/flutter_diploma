@@ -13,11 +13,7 @@ class MyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // Вимкнення банера debug
-      theme: buildAppTheme(), // Використання готової теми
-      home: const MainPage(), // Запуск головної сторінки
-    );
+    return const MainPage();
   }
 }
 
@@ -49,7 +45,7 @@ class _MainPageState extends State<MainPage> {
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const themeQuestion()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const EnglishQuestions()));
                   },
                   icon: const Icon(
                     FontAwesomeIcons.flagUsa,
@@ -60,7 +56,7 @@ class _MainPageState extends State<MainPage> {
                 const SizedBox(height: 20),
                 ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const savedQuestions()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const GermanQuestions()));
                   },
                   icon: const Icon(
                     Icons.abc,
@@ -70,7 +66,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton.icon(onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const chatBotPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatScreen()));
                   },
                   icon: const Icon(
                       Icons.chat,
@@ -87,15 +83,14 @@ class _MainPageState extends State<MainPage> {
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Словник'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Профіль'),
           ],
-          currentIndex: 0,
           onTap: (index) {
             // Обробка натискання на елементи навігації
 
             if(index == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const searchWord()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchWord()));
             }
             if(index == 1){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const profile()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()));
             }
           },
         ),

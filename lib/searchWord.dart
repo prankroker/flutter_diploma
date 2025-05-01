@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_diploma/themes/theme.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart';
 
-class searchWord extends StatefulWidget {
-  const searchWord({super.key});
+class SearchWord extends StatefulWidget {
+  const SearchWord({super.key});
 
   @override
-  State<searchWord> createState() => _SearchWordState();
+  State<SearchWord> createState() => _SearchWordState();
 }
 
-class _SearchWordState extends State<searchWord> {
+class _SearchWordState extends State<SearchWord> {
   final SpeechToText _speechToText = SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
   Map? _currentVoice;//it is optional
