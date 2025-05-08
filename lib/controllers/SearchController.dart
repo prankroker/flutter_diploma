@@ -8,10 +8,18 @@ class SearchWordController {
   final ValueNotifier<String> wordMeaningNotifier = ValueNotifier('');
   final ValueNotifier<bool> isLoadingNotifier = ValueNotifier(false);
   final ValueNotifier<bool> isSpeakingNotifier = ValueNotifier(false);
+  final ValueNotifier<bool> isListeningNotifier = ValueNotifier(false);
+  final ValueNotifier<String> speechResultNotifier = ValueNotifier('');
 
   SearchWordController(this._model) {
     _model.addListener(_updateState);
+    speechResultNotifier.addListener(() {
+      if (speechResultNotifier.value.isNotEmpty) {
+        textController.text = speechResultNotifier.value;
+      }
+    });
   }
+
 
   Future<void> init() async {
     await _model.initSpeech();
@@ -21,11 +29,14 @@ class SearchWordController {
 
   void handleSearch() => _model.searchWord(textController.text.trim());
 
-  void handleMicPress() {
+  Future<void> handleMicPress() async {
     if (_model.isListening) {
-      _model.stopListening();
+      await _model.stopListening();
+      isListeningNotifier.value = false;
     } else {
-      _model.startListening();
+      speechResultNotifier.value = ''; // Clear previous result
+      await _model.startListening();
+      isListeningNotifier.value = true;
     }
   }
 
@@ -41,6 +52,10 @@ class SearchWordController {
     wordMeaningNotifier.value = _model.wordMeaning;
     isLoadingNotifier.value = _model.isLoading;
     isSpeakingNotifier.value = _model.isSpeaking;
+
+    if (_model.lastSpeechResult.isNotEmpty) {
+      speechResultNotifier.value = _model.lastSpeechResult;
+    }
   }
 
   Future<void> dispose() async {

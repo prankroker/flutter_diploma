@@ -44,7 +44,7 @@ class QuizController {
   }
 
   bool answerQuestion(int selectedIndex) {
-    if (currentIndex >= questions.length) return true; // prevent overflow
+    if (currentIndex >= questions.length) return true; // запобігає виходу за межі масиву
 
     final question = questions[currentIndex];
     if (selectedIndex == question.correctIndex) {

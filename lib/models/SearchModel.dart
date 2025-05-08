@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/foundation.dart';
 
@@ -18,6 +19,8 @@ class SearchModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _speechEnabled = false;
   Map? _currentVoice;
+  String _lastSpeechResult = '';
+  String get lastSpeechResult => _lastSpeechResult;
 
   // Геттери для доступу ззовні
   bool get isListening => _speechToText.isListening;
@@ -26,7 +29,15 @@ class SearchModel extends ChangeNotifier {
   bool get speechEnabled => _speechEnabled;
 
   Future<void> initSpeech() async {
-    _speechEnabled = await _speechToText.initialize();
+    _speechEnabled = await _speechToText.initialize(
+      onError: (error) => print("Speech error: $error"),
+      onStatus: (status) => print("Speech status: $status"),
+    );
+
+    if (!_speechEnabled) {
+      print("Speech recognition not available");
+    }
+    notifyListeners();
   }
 
   Future<void> initTTS() async {
@@ -41,17 +52,31 @@ class SearchModel extends ChangeNotifier {
   }
 
   Future<void> startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
+    if (!_speechEnabled) {
+      print("Speech not enabled");
+      return;
+    }
+
+    await _speechToText.listen(
+      onResult: _onSpeechResult,
+      localeId: "en_US", // or your preferred locale
+      listenFor: Duration(seconds: 30),
+      pauseFor: Duration(seconds: 5),
+    );
+    notifyListeners();
   }
 
   Future<void> stopListening() async {
     await _speechToText.stop();
   }
 
-  void _onSpeechResult(result) {
-    _wordMeaning = result.recognizedWords;
-    notifyListeners();
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    if (result.finalResult) {
+      _lastSpeechResult = result.recognizedWords;
+      notifyListeners();
+    }
   }
+
 
   Future<void> searchWord(String term) async {
     if (term.isEmpty) {

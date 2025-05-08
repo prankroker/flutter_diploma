@@ -85,7 +85,7 @@ class _QuizPageState extends State<QuizPage> {
     final result = await controller.analyzeMistakes();
 
     if (!mounted) return;
-    Navigator.of(context).pop(); // close loading
+    Navigator.of(context).pop(); // закрити завантаження
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
