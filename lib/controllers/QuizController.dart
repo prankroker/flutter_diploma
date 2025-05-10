@@ -76,7 +76,7 @@ class QuizController {
       {
         "role": "system",
         "content":
-        "Explain why the given answers are correct or incorrect, and provide the correct answers if necessary, even if the questions are in another language."
+        "Explain and analyze strictly in English only, no matter what language is used in the questions or answers (e.g., German, Spanish, etc.). For each answer, explain why it is correct or incorrect, and provide the correct answer when necessary. Do not use any language other than English in your explanation."
       },
       {
         "role": "user",

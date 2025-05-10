@@ -4,6 +4,7 @@ import 'package:flutter_diploma/controllers/SearchController.dart';
 import 'package:flutter_diploma/models/ChatModel.dart';
 import 'package:flutter_diploma/models/SearchModel.dart';
 import 'package:flutter_diploma/themes/theme.dart';
+import 'package:flutter_diploma/views/screens/Theory.dart';
 import 'package:flutter_diploma/views/screens/chatBotPage.dart';
 import 'package:flutter_diploma/views/screens/profilePage.dart';
 import 'package:flutter_diploma/views/screens/searchWord.dart';
@@ -78,6 +79,7 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Словник'),
+            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Теорія'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Профіль'),
           ],
           onTap: (index) {
@@ -87,6 +89,9 @@ class _MainPageState extends State<MainPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(controller: _searchWordController,)));
             }
             if(index == 1){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Theory()));
+            }
+            if(index == 2){
               Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()));
             }
           },
