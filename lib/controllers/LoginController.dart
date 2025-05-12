@@ -17,10 +17,10 @@ class LoginController {
 
   void signIn(BuildContext context, String email, String password) async{
 
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
+    User? user = await _auth.signInWithEmailAndPassword(context, email, password);
 
     if(user != null){
-      showToast(message: "User is succesfully signIn");
+      showToast(context: context,message: "User is succesfully signIn");
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
     }
   }
@@ -55,7 +55,7 @@ class LoginController {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
       }
     } catch (e) {
-      showToast(message: "Помилка входу через Google: $e");
+      showToast(context: context, message: "Помилка входу через Google: $e");
     }
   }
 }

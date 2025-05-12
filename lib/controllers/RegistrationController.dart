@@ -11,7 +11,7 @@ class RegistrationController {
 
   void signUp(BuildContext context,String username,String email,String password) async{
 
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+    User? user = await _auth.signUpWithEmailAndPassword(context, email, password);
 
     if(user != null){
       await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
@@ -19,7 +19,7 @@ class RegistrationController {
         'email':email
       });
 
-      showToast(message: "User is succesfully created");
+      showToast(context:context, message: "User is succesfully created");
       Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
     }
   }

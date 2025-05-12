@@ -29,12 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cloud_firestore:
-  firebase_ui_oauth_google:
-  firebase_core:
   flutter_map:
   firebase_storage:
-  firebase_auth:
-  google_sign_in:
   font_awesome_flutter:
   fluttertoast:
   latlong2:
@@ -44,6 +40,10 @@ dependencies:
   url_launcher:
   speech_to_text: ^6.0.0
   flutter_tts: ^3.8.3
+  firebase_core:
+  firebase_auth:
+  firebase_ui_oauth_google:
+  google_sign_in:
   flutter:
     sdk: flutter
 
