@@ -43,6 +43,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
+                  key: const ValueKey('email_field'),
                   controller: emailController,
                   decoration: const InputDecoration(
                     labelText: 'Введіть email',
@@ -50,6 +51,7 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 20,),
                 TextField(
+                  key: const ValueKey('password_field'),
                   controller: passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Введіть пароль',

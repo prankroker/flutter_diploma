@@ -43,6 +43,7 @@ class _RegistrationState extends State<Registration> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
+                  key: const ValueKey('username'),
                   controller: usernameController,
                   decoration: const InputDecoration(
                     labelText: 'Введіть юзернейм',
@@ -50,6 +51,7 @@ class _RegistrationState extends State<Registration> {
                 ),
                 const SizedBox(height: 20,),
                 TextField(
+                  key: const ValueKey('email_field'),
                   controller: emailController,
                   decoration: const InputDecoration(
                     labelText: 'Введіть пошту',
@@ -57,6 +59,7 @@ class _RegistrationState extends State<Registration> {
                 ),
                 const SizedBox(height: 20,),
                 TextField(
+                  key: const ValueKey('password_field'),
                   controller: passwordController,
                   decoration: const InputDecoration(
                       labelText: 'Введіть пароль'

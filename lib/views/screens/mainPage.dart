@@ -70,7 +70,7 @@ class _MainPageState extends State<MainPage> {
                       Icons.chat,
                       color: Colors.purple
                   ),
-                  label:const Text('Чат бот'),
+                  label:const Text('Чат-бот'),
                 ),
               ],
             ),
